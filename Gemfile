@@ -68,3 +68,4 @@ end
 
 
 gem 'slim-rails'
+gem "devise", "~> 4.9"
