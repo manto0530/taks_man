@@ -3,14 +3,14 @@ class Task < ApplicationRecord
 
   enum status: { backlog: 'Backlog', in_progress: 'In-progress', done: 'Done' }
 
-  # validates :deadline, presence: true
-  # validate :deadline_within_range
+  validates :title, :description, :status, :deadline, presence: true
+  validate :deadline_must_be_in_future
 
-  # private
+  private
 
-  # def deadline_within_range
-  #   if deadline.present? && (deadline < Date.current || deadline >= Date.current + 1.day)
-  #     errors.add(:deadline, "must be today and within 24 hours")
-  #   end
-  # end
+  def deadline_must_be_in_future
+    if deadline.present? && deadline < DateTime.current
+      errors.add(:deadline, "must be in the future")
+    end
+  end
 end

@@ -1,31 +1,27 @@
-= form_with(model: task) do |form|
+= form_with(model: task, local: true) do |form|
   - if task.errors.any?
-    div style="color: red"
-      h2 = "#{pluralize(task.errors.count, "error")} prohibited this task from being saved:"
+    #error_explanation
+      h2
+        = "#{pluralize(task.errors.count, "error")} prohibited this task from being saved:"
       ul
-        - task.errors.each do |error|
-          li = error.full_message
+        - task.errors.full_messages.each do |message|
+          li = message
 
-  div
-    = form.label :title, style: "display: block"
-    = form.text_field :title
+  .field
+    = form.label :title
+    = form.text_field :title, class: 'form-control'
 
-  div
-    = form.label :description, style: "display: block"
-    = form.text_area :description
+  .field
+    = form.label :description
+    = form.text_area :description, class: 'form-control'
 
-  div
-    = form.label :status, style: "display: block"
-    = form.select :status, Task.statuses.keys.map { |status| [status.humanize, status] }, {}, class: 'form-control'
+  .field
+    = form.label :status
+    = form.select :status, Task.statuses.keys.map { |status| [status.titleize, status] }, {}, class: 'form-control'
 
+  .field
+    = form.label :deadline
+    = form.datetime_local_field :deadline, class: 'form-control'
 
-  //div
-    = form.label :deadline, style: "display: block"
-    = form.datetime_local_field :deadline
-
-
-  div
-    = form.hidden_field :user_id, value: task.user_id 
-
-  div
-    = form.submit
+  .actions
+    = form.submit class: 'btn btn-primary'
