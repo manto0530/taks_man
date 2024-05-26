@@ -69,3 +69,6 @@ end
 
 gem 'slim-rails'
 gem "devise", "~> 4.9"
+gem 'sidekiq'
+gem 'whenever', require: false
+

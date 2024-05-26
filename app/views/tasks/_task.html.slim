@@ -9,5 +9,8 @@ div id="#{dom_id task}"
     strong Status:
     =< task.status
   p
+    strong Deadline
+    =< task.deadline.strftime('%Y-%m-%d %H:%M')
+  p
     strong User:
     =< task.user_id

@@ -1,27 +1,45 @@
-= form_with(model: task, local: true) do |form|
-  - if task.errors.any?
-    #error_explanation
-      h2
-        = "#{pluralize(task.errors.count, "error")} prohibited this task from being saved:"
-      ul
-        - task.errors.full_messages.each do |message|
-          li = message
+.row.justify-content-center
+  .col-md-9
+    .col-md-8
+      = form_with(model: task, local: true) do |form|
+        - if task.errors.any?
+          #error_explanation
+            h2
+              = "#{pluralize(task.errors.count, "error")} prohibited this task from being saved:"
+            ul
+              - task.errors.full_messages.each do |message|
+                li = message
 
-  .field
-    = form.label :title
-    = form.text_field :title, class: 'form-control'
+        .field
+          = form.label :title
+          = form.text_field :title, class: 'form-control'
+        br
+        .field
+          = form.label :description
+          = form.text_area :description, class: 'form-control'
+        br
+        .field
+          = form.label :status
+          = form.select :status, Task.statuses.keys.map { |status| [status.titleize, status] }, {}, class: 'form-control'
+        br
+        //.field
+          = form.label :deadline
+          = form.datetime_field :deadline, class: 'form-control', id: 'task_deadline'
+        br
+        .field.hidden
+          = form.hidden_field :user_id, value: current_user.id
 
-  .field
-    = form.label :description
-    = form.text_area :description, class: 'form-control'
+        br
+        br
+        .actions
+          = form.submit class: 'btn btn-primary'
 
-  .field
-    = form.label :status
-    = form.select :status, Task.statuses.keys.map { |status| [status.titleize, status] }, {}, class: 'form-control'
+javascript:
+  document.addEventListener('DOMContentLoaded', function() {
+    flatpickr("#task_deadline", {
+      enableTime: true,
+      minDate: "today",
+      dateFormat: "Y-m-d H:i",
+    });
+  });
 
-  .field
-    = form.label :deadline
-    = form.datetime_field :deadline, class: 'form-control'
-
-  .actions
-    = form.submit class: 'btn btn-primary'

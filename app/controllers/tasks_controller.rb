@@ -23,6 +23,7 @@ class TasksController < ApplicationController
   # POST /tasks
   def create
     @task = current_user.tasks.build(task_params)
+    @task.deadline = DateTime.parse(params[:task][:deadline])
 
     if @task.save
       redirect_to @task, notice: 'Task was successfully created.'
@@ -48,11 +49,11 @@ class TasksController < ApplicationController
 
   private
 
-    def set_task
-      @task = current_user.tasks.find(params[:id])
-    end
+  def set_task
+    @task = current_user.tasks.find(params[:id])
+  end
 
-    def task_params
-      params.require(:task).permit(:title, :description, :status, :deadline)
-    end
+  def task_params
+    params.require(:task).permit(:title, :description, :status, :deadline)
+  end
 end
